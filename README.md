@@ -21,25 +21,47 @@ npm run build     # static site in ./dist
 npm run preview   # serve ./dist locally
 ```
 
-## Deploy on the VPS with Coolify
+## Deploy on the new OVHcloud VPS (recommended)
 
-The repo ships a `Dockerfile` (Node build → nginx serving `dist/`) and `nginx.conf`.
+Everything needed is in `deploy/`: Docker Compose runs the site behind **Caddy**, which gets and renews the HTTPS certificate on its own.
 
-1. **DNS** (OVHcloud → Web Cloud → Domain names → `kohlestate-ksa.online` → DNS zone): add an **A** record, sub-domain `moh-cv`, target = the VPS IPv4 address. Wait until `nslookup moh-cv.kohlestate-ksa.online` returns that IP.
-2. **Coolify** → Projects → New resource → Public/Private Repository → `aboziyad2251/MyCV`, branch `main`.
-3. Build pack: **Dockerfile**. Exposed port: **80**.
-4. Domain: `https://moh-cv.kohlestate-ksa.online`. Coolify requests the Let's Encrypt certificate.
-5. Deploy, and turn on **Auto deploy** so every push to `main` goes live.
+1. **DNS**: OVHcloud → Web Cloud → Domain names → `kohlestate-ksa.online` → DNS zone. The **A** record `moh-cv` must point to the **new** VPS IPv4 address.
+2. **One command on the VPS** (Ubuntu or Debian, fresh install):
 
-### Without Coolify (plain Docker on the VPS)
+   ```bash
+   ssh ubuntu@NEW_VPS_IP
+   curl -fsSL https://raw.githubusercontent.com/aboziyad2251/MyCV/main/deploy/install.sh | sudo bash
+   ```
+
+   The script installs Docker, checks that DNS points to this server, opens ports 80/443 if the firewall is on, clones the repo into `/opt/moh-cv`, builds the site and starts it. It is safe to run again; running it again pulls the latest `main` and redeploys.
+3. Open https://moh-cv.kohlestate-ksa.online
+
+### Auto-deploy on every push (optional)
+
+`.github/workflows/deploy.yml` re-runs the install script over SSH whenever `main` changes. It stays off until you add three repository secrets (GitHub → Settings → Secrets and variables → Actions):
+
+| Secret | Value |
+| --- | --- |
+| `VPS_HOST` | new VPS IP address |
+| `VPS_USER` | `ubuntu` (OVH default; has passwordless sudo) |
+| `VPS_SSH_KEY` | a private key whose public key is in `~/.ssh/authorized_keys` on the VPS |
+
+To make a deploy key: `ssh-keygen -t ed25519 -f moh-cv-deploy -N ""`, append `moh-cv-deploy.pub` to the VPS user's `~/.ssh/authorized_keys`, and paste the contents of `moh-cv-deploy` into `VPS_SSH_KEY`.
+
+`.github/workflows/ci.yml` builds the site on every pull request and push, so a broken change shows up before it goes live.
+
+### Useful commands on the VPS
 
 ```bash
-git clone https://github.com/aboziyad2251/MyCV.git && cd MyCV
-docker build -t moh-cv .
-docker run -d --name moh-cv --restart unless-stopped -p 8080:80 moh-cv
+cd /opt/moh-cv
+docker compose -f deploy/docker-compose.yml ps        # status
+docker compose -f deploy/docker-compose.yml logs -f   # logs (Caddy shows certificate progress)
+docker compose -f deploy/docker-compose.yml down      # stop
 ```
 
-Then point your reverse proxy (nginx/Caddy/Traefik) for `moh-cv.kohlestate-ksa.online` at `127.0.0.1:8080` with HTTPS.
+### Alternative: Coolify
+
+If the VPS runs Coolify instead (it uses ports 80/443 itself, so don't run both): New resource → Public Repository → `aboziyad2251/MyCV`, branch `main`, build pack **Dockerfile**, port **80**, domain `https://moh-cv.kohlestate-ksa.online`, Auto deploy on.
 
 ## Structure
 
@@ -51,4 +73,6 @@ src/styles/global.css     design tokens and layout (RTL-aware)
 src/pages/index.astro     English page
 src/pages/ar/index.astro  Arabic page
 public/                   CV PDF, favicon, icons/, og.png, manifests, sw.js, robots.txt, sitemap.xml
+deploy/                   docker-compose.yml, Caddyfile, install.sh (VPS setup)
+.github/workflows/        ci.yml (build check), deploy.yml (auto-deploy over SSH)
 ```
