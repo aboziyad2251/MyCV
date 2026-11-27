@@ -1,0 +1,82 @@
+---
+import "@fontsource/ibm-plex-sans/latin-400.css";
+import "@fontsource/ibm-plex-sans/latin-500.css";
+import "@fontsource/ibm-plex-sans/latin-600.css";
+import "@fontsource/ibm-plex-sans/latin-700.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-400.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-500.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-600.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-700.css";
+import "@fontsource/ibm-plex-mono/latin-400.css";
+import "@fontsource/ibm-plex-mono/latin-500.css";
+import "../styles/global.css";
+import { contact, person, type Lang } from "../data/cv";
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const isAr = lang === "ar";
+const path = isAr ? "/ar/" : "/";
+const url = new URL(path, contact.site).toString();
+const title = isAr
+  ? `${person.name.ar} | ${person.headline.ar}`
+  : `${person.name.en} | ${person.headline.en}`;
+const description = isAr
+  ? `${person.now.ar}. أكثر من 15 عاماً في عمليات سابك، وبناء أنظمة ERP وCRM والأتمتة بالذكاء الاصطناعي.`
+  : `${person.now.en}. 15+ years of SABIC operations; builds ERP, CRM and AI automation for real estate.`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: person.name.en,
+  alternateName: person.name.ar,
+  jobTitle: "Head of Operations & Digital Transformation",
+  worksFor: { "@type": "Organization", name: "Kohl Real Estate" },
+  address: { "@type": "PostalAddress", addressLocality: "Jeddah", addressCountry: "SA" },
+  email: `mailto:${contact.email}`,
+  telephone: contact.phone,
+  url: contact.site,
+  sameAs: [contact.linkedin, contact.github],
+  alumniOf: [
+    { "@type": "CollegeOrUniversity", name: "MidOcean University" },
+    { "@type": "CollegeOrUniversity", name: "Yanbu Industrial College" },
+  ],
+};
+---
+<!doctype html>
+<html lang={lang} dir={isAr ? "rtl" : "ltr"}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <link rel="alternate" hreflang="en" href={new URL("/", contact.site).toString()} />
+    <link rel="alternate" hreflang="ar" href={new URL("/ar/", contact.site).toString()} />
+    <link rel="alternate" hreflang="x-default" href={new URL("/", contact.site).toString()} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f3efe6" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={new URL("/og.png", contact.site).toString()} />
+    <meta property="og:locale" content={isAr ? "ar_SA" : "en_US"} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {!isAr && (
+      <script is:inline>
+        // First visit from an Arabic browser goes to /ar/. A choice made with the switch is remembered.
+        try {
+          var pref = localStorage.getItem("cv-lang");
+          var nav = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+          if (!pref && nav.toLowerCase().indexOf("ar") === 0) location.replace("/ar/");
+        } catch (e) {}
+      </script>
+    )}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

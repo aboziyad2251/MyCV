@@ -1,28 +1,52 @@
-# moh-cv — Mohammad Abotargah CV website
+# moh-cv — Mohammad Abotargah
 
-Bilingual (English / العربية, full RTL) CV site. Next.js 14 + TypeScript + Tailwind, exported as static HTML and served by nginx.
+Bilingual CV website for **https://moh-cv.kohlestate-ksa.online**
 
-Live: https://moh-cv.kohlestate-ksa.online
+- English at `/`, Arabic (full right-to-left) at `/ar/`. Arabic browsers are sent to `/ar/` on their first visit; the language switch is remembered.
+- Static site built with [Astro](https://astro.build). No server code, no database, no external requests: fonts (IBM Plex Sans, Sans Arabic, Mono) are bundled.
+- Download button serves `public/Mohammad_Abotargah_CV.pdf`.
+- SEO: canonical + hreflang links, OpenGraph preview image (`public/og.png`), JSON-LD `Person`, `robots.txt`, `sitemap.xml`.
+- Prints as a clean CV (Ctrl/Cmd + P).
 
-## Edit content
-All text lives in `content/cv.ts` (both languages side by side). Change it there and rebuild.
-Replace `public/Mohammad_Abotargah_CV.pdf` to update the downloadable CV.
+## Update the content
 
-## Run locally
+All text lives in **`src/data/cv.ts`**, English and Arabic side by side. Edit it, then rebuild. To update the downloadable CV, replace `public/Mohammad_Abotargah_CV.pdf` (keep the file name).
+
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build    # static site in ./out
+npm run dev       # http://localhost:4321
+npm run build     # static site in ./dist
+npm run preview   # serve ./dist locally
 ```
 
-## Deploy on Coolify (VPS)
-1. **DNS**: at the registrar for `kohlestate-ksa.online`, add an `A` record: host `moh-cv` → your VPS IP. Wait for it to resolve (`nslookup moh-cv.kohlestate-ksa.online`).
-2. **Coolify** → Projects → New resource → *Public/Private Repository* → `aboziyad2251/MyCV`, branch `main`.
-3. Build pack: **Dockerfile** (uses the `Dockerfile` in this repo). Port: **80**.
-4. Domains: `https://moh-cv.kohlestate-ksa.online`. Coolify issues the Let's Encrypt certificate automatically.
-5. Deploy. Turn on *Auto deploy* so every push to `main` redeploys.
+## Deploy on the VPS with Coolify
 
-## Notes
-- Contact form opens the visitor's email app (static site, no backend). WhatsApp and phone are shown too.
-- Language: auto-detects Arabic browsers; `#ar` in the URL forces Arabic; choice is remembered.
-- SEO: OpenGraph, JSON-LD `Person`, robots.txt, sitemap.xml.
+The repo ships a `Dockerfile` (Node build → nginx serving `dist/`) and `nginx.conf`.
+
+1. **DNS** (OVHcloud → Web Cloud → Domain names → `kohlestate-ksa.online` → DNS zone): add an **A** record, sub-domain `moh-cv`, target = the VPS IPv4 address. Wait until `nslookup moh-cv.kohlestate-ksa.online` returns that IP.
+2. **Coolify** → Projects → New resource → Public/Private Repository → `aboziyad2251/MyCV`, branch `main`.
+3. Build pack: **Dockerfile**. Exposed port: **80**.
+4. Domain: `https://moh-cv.kohlestate-ksa.online`. Coolify requests the Let's Encrypt certificate.
+5. Deploy, and turn on **Auto deploy** so every push to `main` goes live.
+
+### Without Coolify (plain Docker on the VPS)
+
+```bash
+git clone https://github.com/aboziyad2251/MyCV.git && cd MyCV
+docker build -t moh-cv .
+docker run -d --name moh-cv --restart unless-stopped -p 8080:80 moh-cv
+```
+
+Then point your reverse proxy (nginx/Caddy/Traefik) for `moh-cv.kohlestate-ksa.online` at `127.0.0.1:8080` with HTTPS.
+
+## Structure
+
+```
+src/data/cv.ts            all CV content (EN + AR)
+src/components/CV.astro   page sections
+src/layouts/Base.astro    <head>, SEO, fonts, language redirect
+src/styles/global.css     design tokens and layout (RTL-aware)
+src/pages/index.astro     English page
+src/pages/ar/index.astro  Arabic page
+public/                   CV PDF, favicon, og.png, robots.txt, sitemap.xml
+```
