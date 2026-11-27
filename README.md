@@ -33,7 +33,13 @@ Everything needed is in `deploy/`: Docker Compose runs the site behind **Caddy**
    curl -fsSL https://raw.githubusercontent.com/aboziyad2251/MyCV/main/deploy/install.sh | sudo bash
    ```
 
-   The script installs Docker, checks that DNS points to this server, opens ports 80/443 if the firewall is on, clones the repo into `/opt/moh-cv`, builds the site and starts it. It is safe to run again; running it again pulls the latest `main` and redeploys.
+   The script installs Docker if needed, checks that DNS points to this server, clones the repo into `/opt/moh-cv`, builds the site and starts it. It picks the setup by itself:
+
+   - **Nginx Proxy Manager already running** (the current VPS): only the site container starts (`moh-cv-web`, on NPM's Docker network, plus `127.0.0.1:3020+` for local checks). Then add one Proxy Host in NPM: domain `moh-cv.kohlestate-ksa.online` → `http://moh-cv-web:80`, SSL tab → new Let's Encrypt certificate, Force SSL on. The script prints these steps.
+   - **Ports 80/443 free:** the site runs behind Caddy, which issues HTTPS on its own (`deploy/docker-compose.yml`).
+   - **Anything else on 80/443:** it stops without changing anything.
+
+   It is safe to run again; running it again pulls the latest `main` and redeploys.
 3. Open https://moh-cv.kohlestate-ksa.online
 
 ### Auto-deploy on every push (optional)
@@ -73,6 +79,6 @@ src/styles/global.css     design tokens and layout (RTL-aware)
 src/pages/index.astro     English page
 src/pages/ar/index.astro  Arabic page
 public/                   CV PDF, favicon, icons/, og.png, manifests, sw.js, robots.txt, sitemap.xml
-deploy/                   docker-compose.yml, Caddyfile, install.sh (VPS setup)
+deploy/                   install.sh (VPS setup), docker-compose.npm.yml (behind Nginx Proxy Manager), docker-compose.yml + Caddyfile (standalone)
 .github/workflows/        ci.yml (build check), deploy.yml (auto-deploy over SSH)
 ```

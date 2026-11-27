@@ -1,0 +1,25 @@
+# Stack for a VPS that already runs Nginx Proxy Manager (NPM) on ports 80/443.
+# Only the site container runs here; NPM handles the domain and HTTPS.
+#   - joins NPM's Docker network, so NPM forwards to  moh-cv-web:80
+#   - also published on 127.0.0.1:${HOST_PORT} for local checks (not exposed to the internet)
+#
+# install.sh picks this file automatically when it finds NPM, and fills in PROXY_NETWORK / HOST_PORT.
+name: moh-cv
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: moh-cv:latest
+    container_name: moh-cv-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${HOST_PORT:-3020}:80"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:?set PROXY_NETWORK to the Nginx Proxy Manager network}
