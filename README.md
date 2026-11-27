@@ -6,7 +6,9 @@ Bilingual CV website for **https://moh-cv.kohlestate-ksa.online**
 - Static site built with [Astro](https://astro.build). No server code, no database, no external requests: fonts (IBM Plex Sans, Sans Arabic, Mono) are bundled.
 - Download button serves `public/Mohammad_Abotargah_CV.pdf`.
 - SEO: canonical + hreflang links, OpenGraph preview image (`public/og.png`), JSON-LD `Person`, `robots.txt`, `sitemap.xml`.
-- Prints as a clean CV (Ctrl/Cmd + P).
+- **Two themes:** light (cool white + blue) and dark (deep navy + electric blue / cyan). The default follows the visitor's device setting; the sun/moon button switches it and the choice is remembered.
+- **Phone = app:** on phones and tablets the layout switches automatically to an app-style screen with a bottom tab bar (Profile · Career · Projects · Skills · Contact). It can be installed to the home screen (web app manifest + offline cache in `public/sw.js`), and opens full-screen like an app.
+- Prints as a clean CV (Ctrl/Cmd + P), always in the light palette.
 
 ## Update the content
 
@@ -48,5 +50,5 @@ src/layouts/Base.astro    <head>, SEO, fonts, language redirect
 src/styles/global.css     design tokens and layout (RTL-aware)
 src/pages/index.astro     English page
 src/pages/ar/index.astro  Arabic page
-public/                   CV PDF, favicon, og.png, robots.txt, sitemap.xml
+public/                   CV PDF, favicon, icons/, og.png, manifests, sw.js, robots.txt, sitemap.xml
 ```

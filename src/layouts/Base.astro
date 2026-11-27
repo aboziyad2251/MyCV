@@ -54,7 +54,22 @@ const jsonLd = {
     <link rel="alternate" hreflang="ar" href={new URL("/ar/", contact.site).toString()} />
     <link rel="alternate" hreflang="x-default" href={new URL("/", contact.site).toString()} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#f3efe6" />
+    <meta name="theme-color" content="#f5f7fb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0e1a" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="manifest" href={isAr ? "/manifest-ar.webmanifest" : "/manifest.webmanifest"} />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content={isAr ? "ابوطرجه" : "Abotargah"} />
+    <script is:inline>
+      // Apply the saved theme before first paint (no flash).
+      try {
+        var th = localStorage.getItem("cv-theme");
+        if (th === "dark" || th === "light") document.documentElement.setAttribute("data-theme", th);
+      } catch (e) {}
+    </script>
 
     <meta property="og:type" content="profile" />
     <meta property="og:title" content={title} />

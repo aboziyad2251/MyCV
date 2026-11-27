@@ -294,6 +294,14 @@ export const ui = {
   github: { en: "GitHub", ar: "غيت هب" },
   rights: { en: "All rights reserved.", ar: "جميع الحقوق محفوظة." },
   skip: { en: "Skip to content", ar: "انتقل إلى المحتوى" },
+  theme: { en: "Switch light / dark theme", ar: "التبديل بين الوضع الفاتح والداكن" },
+  tabs: {
+    profile: { en: "Profile", ar: "نبذة" },
+    experience: { en: "Career", ar: "الخبرات" },
+    projects: { en: "Projects", ar: "مشاريع" },
+    skills: { en: "Skills", ar: "مهارات" },
+    contact: { en: "Contact", ar: "تواصل" },
+  },
 };
 
 export const t = (v: T, lang: Lang) => v[lang];
