@@ -1,6 +1,5 @@
 // Single source of truth for the CV website. Edit text here; components only render it.
-// NOTE: name spelling follows the current CV ("Mohammad Abotargah"). Change it here once you
-// settle on one spelling (Cycle 1 task) and every section updates.
+// Name spelling is final: "Mohammad Abotargah". Content mirrors Mohammad_Abotargah_CV.pdf (Track B CV).
 
 export type Lang = "en" | "ar";
 type L = { en: string; ar: string };
@@ -28,8 +27,8 @@ export const person = {
   } as L,
   location: { en: "Jeddah, Saudi Arabia", ar: "جدة، المملكة العربية السعودية" } as L,
   summary: {
-    en: "Operations leader with 15+ years at SABIC and hands-on digital transformation in real estate. I cut production costs by $200,000 and power use by 15% at SABIC, and built a full in-house ERP with AI-automated reporting at Kohl Real Estate with no technical team. Google-certified project manager, completing a Bachelor of Project Management.",
-    ar: "قائد عمليات بخبرة تتجاوز 15 عاماً في سابك وخبرة عملية في التحول الرقمي بالقطاع العقاري. خفّضت تكاليف الإنتاج 200 ألف دولار واستهلاك الطاقة 15% في سابك، وبنيت نظام ERP داخلياً متكاملاً مع تقارير مؤتمتة بالذكاء الاصطناعي في كحل العقارية دون فريق تقني. مدير مشاريع معتمد من Google، وأستكمل بكالوريوس إدارة المشاريع.",
+    en: "Operations and digital transformation leader who built a full in-house ERP for a FAL-licensed real estate firm with no technical team: 34 tables covering properties, contracts, CRM, finance and HR, with an AI-automated daily income report running on live ERP data. As project manager and lead developer, delivered 6 live digital products on self-managed cloud servers. Brings 15+ years of SABIC operations discipline: $200,000 production cost cut, 15% power reduction, 15% productivity gain and a $2M+ turnaround finished 5 days early. Google-certified project manager; Bachelor of Project Management expected Apr 2027.",
+    ar: "قائد عمليات وتحول رقمي بنى نظام ERP داخلياً متكاملاً لمنشأة عقارية مرخّصة من فال دون فريق تقني: 34 جدولاً تغطي العقارات والعقود وإدارة العملاء والمالية والموارد البشرية، مع تقرير دخل يومي مؤتمت بالذكاء الاصطناعي على بيانات ERP الحية. سلّمت بصفتي مدير مشاريع ومطوراً رئيسياً 6 منتجات رقمية حية على خوادم سحابية أديرها بنفسي. أحمل انضباط أكثر من 15 عاماً في عمليات سابك: خفض تكاليف الإنتاج 200 ألف دولار، وخفض الطاقة 15%، ورفع الإنتاجية 15%، وصيانة شاملة بأكثر من مليوني دولار أُنجزت قبل موعدها بـ5 أيام. مدير مشاريع معتمد من Google، وبكالوريوس إدارة المشاريع متوقع في أبريل 2027.",
   } as L,
 };
 
@@ -50,12 +49,13 @@ export const experience: Role[] = [
     title: { en: "Head of Operations & Digital Transformation", ar: "رئيس العمليات والتحول الرقمي" },
     period: { en: "Aug 2026 – Present", ar: "أغسطس 2026 – الآن" },
     place: { en: "Jeddah", ar: "جدة" },
-    context: { en: "FAL-licensed firm: brokerage, property management, auctions.", ar: "منشأة مرخّصة من فال: وساطة وإدارة أملاك ومزادات." },
+    context: { en: "FAL-licensed real estate firm (brokerage, property management, auctions) expanding into Jeddah.", ar: "منشأة عقارية مرخّصة من فال (وساطة وإدارة أملاك ومزادات) تتوسع في جدة." },
     points: [
       { en: "Built the company's in-house ERP with no technical team: properties, contracts, CRM, finance and HR on a 34-table database.", ar: "بنيت نظام ERP داخلياً دون فريق تقني: العقارات والعقود وإدارة العملاء والمالية والموارد البشرية على قاعدة بيانات من 34 جدولاً." },
       { en: "Set up a CRM pipeline tracking 190+ leads and 700+ client activities across a 20-property portfolio.", ar: "أسست مسار CRM يتابع أكثر من 190 عميلاً محتملاً و700 نشاط عبر محفظة من 20 عقاراً." },
       { en: "Automated the daily income report to management with AI connected to live ERP data.", ar: "أتمتة التقرير اليومي للدخل للإدارة بالذكاء الاصطناعي المتصل ببيانات ERP الحية." },
       { en: "Digitized the 46-page operating constitution into SOPs, unified forms and contract templates.", ar: "حوّلت دستور التشغيل (46 صفحة) إلى إجراءات تشغيل قياسية ونماذج موحدة وقوالب عقود." },
+      { en: "Automated call routing, launched a post-call satisfaction survey and hired a leasing specialist.", ar: "أتمتة توجيه المكالمات، وإطلاق استبيان رضا بعد المكالمة، وتوظيف أخصائي تأجير." },
     ],
   },
   {
@@ -69,12 +69,15 @@ export const experience: Role[] = [
   },
   {
     org: { en: "SABIC", ar: "سابك" },
-    title: { en: "Operations Specialist, HDPE (Acting) · DCS Senior Operator / Team Lead · Operator", ar: "أخصائي عمليات HDPE (بالإنابة) · مشغل أول DCS / قائد فريق · مشغل" },
+    title: { en: "Operations Specialist, HDPE (Acting, 2024) · DCS Senior Operator / Team Lead (2017–2024) · Operator (2008–2017)", ar: "أخصائي عمليات HDPE بالإنابة (2024) · مشغل أول DCS / قائد فريق (2017–2024) · مشغل (2008–2017)" },
     period: { en: "Oct 2008 – Jul 2024", ar: "أكتوبر 2008 – يوليو 2024" },
     place: { en: "Yanbu", ar: "ينبع" },
     points: [
       { en: "Cut production costs by $200,000, reduced power use by 15% and raised team productivity by 15%.", ar: "خفّضت تكاليف الإنتاج 200 ألف دولار واستهلاك الطاقة 15% ورفعت إنتاجية الفريق 15%." },
-      { en: "Monitored all HDPE assets against safety, quality and production targets; led SOP reviews to ISO standards; HAZOP and ISO audits.", ar: "راقبت جميع أصول HDPE وفق أهداف السلامة والجودة والإنتاج، وقدت مراجعات الإجراءات وفق ISO، وشاركت في دراسات HAZOP وتدقيقات ISO." },
+      { en: "Led daily shift oversight and corrective actions; championed change control to reduce downtime.", ar: "قدت الإشراف اليومي على الورديات والإجراءات التصحيحية، وتبنّيت ضبط التغيير لتقليل التوقفات." },
+      { en: "Coached and trained junior operators as HDPE Subject Matter Expert.", ar: "درّبت المشغلين الجدد وأرشدتهم بصفتي خبيراً متخصصاً في HDPE." },
+      { en: "Monitored all HDPE assets against safety, quality and production targets; led SOP reviews to ISO standards.", ar: "راقبت جميع أصول HDPE وفق أهداف السلامة والجودة والإنتاج، وقدت مراجعات الإجراءات وفق معايير ISO." },
+      { en: "Represented HDPE in cross-department reliability work; took part in HAZOP studies and ISO audits.", ar: "مثّلت HDPE في أعمال الموثوقية بين الإدارات، وشاركت في دراسات HAZOP وتدقيقات ISO." },
       { en: "Raised critical equipment uptime by 15% through disciplined preventive maintenance.", ar: "رفعت جاهزية المعدات الحرجة 15% عبر صيانة وقائية منضبطة." },
       { en: "Certified first responder and Public Safety & Emergency Response Officer (2012–2024).", ar: "مستجيب أول معتمد وضابط سلامة عامة وطوارئ (2012–2024)." },
     ],
@@ -91,15 +94,16 @@ export const experience: Role[] = [
 export const projects: { name: L; role: L; year: string; text: L }[] = [
   { name: { en: "B-MAI Bottled Water Plant", ar: "مصنع B-MAI للمياه المعبأة" }, role: { en: "Project Manager", ar: "مدير المشروع" }, year: "2026 –", text: { en: "Leading the feasibility study (ROI, break-even) for a new factory in Jeddah 3rd Industrial City.", ar: "أقود دراسة الجدوى (العائد ونقطة التعادل) لمصنع جديد في المدينة الصناعية الثالثة بجدة." } },
   { name: { en: "Kohl ERP & AI reporting", ar: "نظام كحل ERP وتقارير الذكاء الاصطناعي" }, role: { en: "Architect & builder", ar: "مصمم ومنفّذ" }, year: "2026", text: { en: "34-table ERP covering properties, contracts, CRM, finance and HR, with AI daily income reporting.", ar: "نظام من 34 جدولاً يغطي العقارات والعقود والعملاء والمالية والموارد البشرية مع تقرير دخل يومي بالذكاء الاصطناعي." } },
-  { name: { en: "6 live digital products", ar: "6 منتجات رقمية حية" }, role: { en: "PM & lead developer", ar: "مدير ومطور رئيسي" }, year: "2024 –", text: { en: "Learning platform, Islamic mobile app, AI CV optimizer, exam tools and HR payroll, self-hosted.", ar: "منصة تعليمية، تطبيق إسلامي، محسّن سيرة ذاتية بالذكاء الاصطناعي، أدوات اختبارات، ونظام رواتب، باستضافة ذاتية." } },
+  { name: { en: "6 live digital products", ar: "6 منتجات رقمية حية" }, role: { en: "PM & lead developer", ar: "مدير ومطور رئيسي" }, year: "2024 –", text: { en: "Learning platform, mobile app, AI CV and exam tools, and HR payroll, on self-managed cloud servers.", ar: "منصة تعليمية، تطبيق جوال، أدوات سيرة ذاتية واختبارات بالذكاء الاصطناعي، ونظام رواتب، على خوادم سحابية أديرها بنفسي." } },
   { name: { en: "Polymer Turnaround, SABIC", ar: "صيانة البوليمرات الشاملة، سابك" }, role: { en: "Project Coordinator", ar: "منسق المشروع" }, year: "2014", text: { en: "Coordinated maintenance on a $2M+ turnaround with zero downtime, finishing 5 days early.", ar: "نسّقت صيانة شاملة بقيمة تتجاوز مليوني دولار دون توقف، وأُنجزت قبل موعدها بـ5 أيام." } },
   { name: { en: "Ethylene Glycol GRIP Project, SABIC", ar: "مشروع GRIP لجلايكول الإيثيلين، سابك" }, role: { en: "Safety Officer", ar: "ضابط السلامة" }, year: "2014", text: { en: "Cut projected costs by 15% ($20M saved) with zero safety incidents.", ar: "خفض التكاليف المتوقعة 15% (وفر 20 مليون دولار) دون أي حوادث سلامة." } },
 ];
 
 export const competencies: { group: L; items: L }[] = [
-  { group: { en: "Operations", ar: "العمليات" }, items: { en: "SOPs · KPI reporting · process optimization · sales, leasing & collections · SAP (MM/PP) · DCS · HAZOP · NEBOSH safety", ar: "إجراءات التشغيل · تقارير المؤشرات · تحسين العمليات · المبيعات والتأجير والتحصيل · SAP (MM/PP) · DCS · HAZOP · سلامة NEBOSH" } },
-  { group: { en: "Digital", ar: "الرقمي" }, items: { en: "ERP design & build · workflow automation (n8n, Supabase) · CRM integration · AI in operations · Next.js, TypeScript", ar: "تصميم وبناء ERP · أتمتة سير العمل (n8n وSupabase) · تكامل CRM · الذكاء الاصطناعي في العمليات · Next.js وTypeScript" } },
-  { group: { en: "Leadership & PM", ar: "القيادة وإدارة المشاريع" }, items: { en: "PMBOK lifecycle · budget control · team building · training (TOT) · stakeholder management", ar: "دورة حياة PMBOK · ضبط الميزانية · بناء الفرق · التدريب (TOT) · إدارة أصحاب المصلحة" } },
+  { group: { en: "Digital Transformation", ar: "التحول الرقمي" }, items: { en: "ERP design and build · CRM pipeline and integration · workflow automation (n8n, Supabase) · AI-driven reporting · self-managed cloud deployment", ar: "تصميم وبناء ERP · مسار CRM وتكامله · أتمتة سير العمل (n8n وSupabase) · تقارير بالذكاء الاصطناعي · نشر سحابي بإدارة ذاتية" } },
+  { group: { en: "Real Estate Operations", ar: "العمليات العقارية" }, items: { en: "Property management · sales, leasing & collections · contracts and templates · SOPs and unified forms · KPI reporting", ar: "إدارة الأملاك · المبيعات والتأجير والتحصيل · العقود والقوالب · إجراءات التشغيل والنماذج الموحدة · تقارير المؤشرات" } },
+  { group: { en: "Leadership & PM", ar: "القيادة وإدارة المشاريع" }, items: { en: "PMBOK lifecycle · budget control · change control · team building and training (TOT, Subject Matter Expert) · stakeholder management", ar: "دورة حياة PMBOK · ضبط الميزانية · ضبط التغيير · بناء الفرق والتدريب (TOT، خبير متخصص) · إدارة أصحاب المصلحة" } },
+  { group: { en: "Operational Excellence", ar: "التميز التشغيلي" }, items: { en: "Production cost and energy optimization · SAP (MM/PP) · DCS · HAZOP · ISO audits · NEBOSH safety", ar: "تحسين تكاليف الإنتاج والطاقة · SAP (MM/PP) · DCS · HAZOP · تدقيقات ISO · سلامة NEBOSH" } },
 ];
 
 export const education: { name: L; org: L; year: L }[] = [

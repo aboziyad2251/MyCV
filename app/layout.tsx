@@ -5,7 +5,7 @@ import { contact, person } from "@/content/cv";
 export const metadata: Metadata = {
   metadataBase: new URL(contact.site),
   title: `${person.name.en} | ${person.title.en}`,
-  description: person.summary.en,
+  description: person.tagline.en,
   alternates: { canonical: "/" },
   openGraph: {
     type: "profile",
