@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body { @apply bg-paper text-navy font-sans antialiased; overflow-x: clip; }
+[dir="rtl"] body, [dir="rtl"] .font-display { font-family: Tajawal, Inter, sans-serif; }
+[dir="rtl"] .font-display { font-weight: 700; }
+.section { @apply px-5 sm:px-8 py-16 sm:py-24; }
+.wrap { @apply mx-auto max-w-content; }
+.eyebrow { @apply text-gold-dark font-semibold text-sm; }
+.h2 { @apply font-display text-3xl sm:text-4xl leading-tight text-navy; text-wrap: balance; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #C8A44E; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
