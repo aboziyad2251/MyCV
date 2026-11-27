@@ -1,0 +1,22 @@
+name: Build check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Check both language pages exist
+        run: test -f dist/index.html && test -f dist/ar/index.html && test -f dist/Mohammad_Abotargah_CV.pdf
+      - name: Check deploy script syntax
+        run: bash -n deploy/install.sh

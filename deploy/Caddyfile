@@ -1,0 +1,13 @@
+{
+	email {$ACME_EMAIL}
+}
+
+# HTTPS site. Caddy redirects http:// to https:// automatically.
+{$DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		-Server
+	}
+	reverse_proxy web:80
+}

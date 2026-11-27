@@ -1,0 +1,37 @@
+# Production stack for the CV site on a plain VPS.
+#   web   = the static site (nginx, built from ../Dockerfile)
+#   caddy = HTTPS reverse proxy; gets and renews the Let's Encrypt certificate by itself
+#
+# Start / update:  docker compose -f deploy/docker-compose.yml up -d --build
+name: moh-cv
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: moh-cv:latest
+    restart: unless-stopped
+    expose:
+      - "80"
+
+  caddy:
+    image: caddy:2.8.4-alpine
+    restart: unless-stopped
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:-moh-cv.kohlestate-ksa.online}
+      ACME_EMAIL: ${ACME_EMAIL:-tarj123@gmail.com}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

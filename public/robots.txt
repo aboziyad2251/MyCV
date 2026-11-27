@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://moh-cv.kohlestate-ksa.online/sitemap.xml
