@@ -35,7 +35,7 @@ Everything needed is in `deploy/`: Docker Compose runs the site behind **Caddy**
 
    The script installs Docker if needed, checks that DNS points to this server, clones the repo into `/opt/moh-cv`, builds the site and starts it. It picks the setup by itself:
 
-   - **Nginx Proxy Manager already running** (the current VPS): only the site container starts (`moh-cv-web`, on NPM's Docker network, plus `127.0.0.1:3020+` for local checks). Then add one Proxy Host in NPM: domain `moh-cv.kohlestate-ksa.online` → `http://moh-cv-web:80`, SSL tab → new Let's Encrypt certificate, Force SSL on. The script prints these steps.
+   - **Nginx Proxy Manager already running** (the current VPS): only the site container starts (`moh-cv-web`, on NPM's Docker network; no host port is published). Then add one Proxy Host in NPM: domain `moh-cv.kohlestate-ksa.online` → `http://moh-cv-web:80`, SSL tab → new Let's Encrypt certificate, Force SSL on. The script prints these steps.
    - **Ports 80/443 free:** the site runs behind Caddy, which issues HTTPS on its own (`deploy/docker-compose.yml`).
    - **Anything else on 80/443:** it stops without changing anything.
 

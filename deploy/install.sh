@@ -11,7 +11,7 @@
 #   * something else on 80/443              -> stops without changing anything
 #
 # Run it again any time to pull the latest version from GitHub and redeploy.
-# Optional overrides: DOMAIN=... ACME_EMAIL=... APP_DIR=... BRANCH=... HOST_PORT=...
+# Optional overrides: DOMAIN=... ACME_EMAIL=... APP_DIR=... BRANCH=...
 set -euo pipefail
 
 DOMAIN="${DOMAIN:-moh-cv.kohlestate-ksa.online}"
@@ -101,23 +101,26 @@ if [ "$MODE" = "npm" ]; then
     fi
   fi
 
-  if [ -z "${HOST_PORT:-}" ]; then
-    HOST_PORT=3020
-    while port_busy "$HOST_PORT"; do HOST_PORT=$((HOST_PORT + 1)); done
-  fi
-  printf 'PROXY_NETWORK=%s\nHOST_PORT=%s\n' "$PROXY_NETWORK" "$HOST_PORT" > "$ENV_FILE"
-  echo "    Docker network: $PROXY_NETWORK   local port: 127.0.0.1:$HOST_PORT"
+  printf 'PROXY_NETWORK=%s\n' "$PROXY_NETWORK" > "$ENV_FILE"
+  echo "    Docker network: $PROXY_NETWORK"
 
   say "Building and starting the site"
   docker compose -f deploy/docker-compose.npm.yml --env-file "$ENV_FILE" up -d --build --remove-orphans
 
-  say "Checking the site responds"
+  say "Checking that Nginx Proxy Manager can reach the site"
   ok=""
-  for _ in $(seq 1 15); do
-    if curl -fsS --max-time 3 "http://127.0.0.1:$HOST_PORT/" | grep -q "Abotargah"; then ok=1; break; fi
+  for _ in $(seq 1 20); do
+    code="$(docker exec "$NPM_CONTAINER" curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://moh-cv-web/ 2>/dev/null || true)"
+    if [ "$code" = "200" ]; then ok=1; break; fi
     sleep 2
   done
-  [ -n "$ok" ] && echo "    OK: http://127.0.0.1:$HOST_PORT serves the CV." || warn "The site did not answer yet; check: docker logs moh-cv-web"
+  if [ -n "$ok" ]; then
+    echo "    OK: $NPM_CONTAINER -> http://moh-cv-web/ returns 200."
+  else
+    warn "No answer yet from http://moh-cv-web/ inside $NPM_CONTAINER."
+    docker ps -a --filter name=moh-cv-web --format '    moh-cv-web: {{.Status}}'
+    warn "Check: docker logs --tail 30 moh-cv-web"
+  fi
 
   cat <<EOF
 
@@ -133,7 +136,7 @@ if [ "$MODE" = "npm" ]; then
                 Email                   $ACME_EMAIL
     Save, then open https://$DOMAIN
 
-Updates: run this script again (it keeps the same network and port).
+Updates: run this script again (it keeps the same network).
 Logs:    docker logs -f moh-cv-web
 EOF
   exit 0
